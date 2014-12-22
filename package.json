@@ -1,0 +1,34 @@
+{
+  "name": "sails-hook-machines",
+  "version": "0.11.0",
+  "description": "Implements the api/machines directory in Sails",
+  "keywords": [
+    "sails-hook",
+    "sails",
+    "sails.js",
+    "hook",
+    "machines",
+    "node-machine"
+  ],
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "machine": "^1.0.7",
+    "machinepack-fs": "^1.3.4"
+  },
+  "devDependencies": {
+    "sails": "^0.11.0"
+  },
+  "scripts": {
+    "test": "node ./node_modules/mocha/bin/mocha -b --timeout 5000"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/node-machine/sails-hook-machines.git"
+  },
+  "sails": {
+    "isHook": true
+  },
+  "author": "Mike McNeil",
+  "license": "MIT"
+}
