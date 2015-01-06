@@ -29,6 +29,11 @@ module.exports = function MachinesHook (sails) {
           return cb(err);
         }
 
+        // Only include machine files which end in `.js`
+        _.remove(paths, function (machinePath){
+          return !(machinePath.match(/\.js$/) || machinePath.match(/\.coffee$/) || machinePath.match(/\.cs$/));
+        });
+
         // Expose the app's built-in machinepack (`api/machines/*.js`)
         // as `sails.machines`:
         sails.machines = MachineFactory.pack({
