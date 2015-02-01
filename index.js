@@ -4,7 +4,7 @@
 
 var Path = require('path');
 var _ = require('lodash');
-var MachineFactory = require('machine');
+var Machine = require('machine');
 var Filesystem = require('machinepack-fs');
 
 
@@ -78,7 +78,7 @@ module.exports = function MachinesHook (sails) {
         }, []);
 
         // Try to get all of the top level files into a pack
-        sails.machines = MachineFactory.pack({
+        sails.machines = Machine.pack({
           pkg: {
             machinepack: {
               machines: (function mapToBasename(){
