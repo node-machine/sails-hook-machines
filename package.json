@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "lodash": "^2.4.1",
-    "machine": "^2.0.2",
+    "machine": "^3.0.0",
     "machinepack-fs": "^2.0.0"
   },
   "devDependencies": {
