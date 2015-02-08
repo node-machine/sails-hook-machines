@@ -19,7 +19,7 @@ var Filesystem = require('machinepack-fs');
 module.exports = function MachinesHook (sails) {
   return {
 
-    initialize: function (cb) {
+    loadMachines: function (cb) {
 
       sails.machines = {};
 
@@ -77,6 +77,12 @@ module.exports = function MachinesHook (sails) {
           return memo;
         }, []);
 
+        // Clear the require cache of all top-level machines
+        // in case we're reloading
+        _.each(topLevelFiles, function(file) {
+          delete require.cache[file];
+        });
+
         // Try to get all of the top level files into a pack
         sails.machines = Machine.pack({
           pkg: {
@@ -102,6 +108,13 @@ module.exports = function MachinesHook (sails) {
               packageJson = require(packageJson);
               // If it has a "machinepack" key, try to load it as a machinepack
               if (packageJson.machinepack) {
+                // Clear the require cache in case we're reloading
+                var regex = new RegExp(dir);
+                _.each(_.keys(require.cache), function(filePath) {
+                  if (filePath.match(regex)) {
+                    delete require.cache[filePath];
+                  }
+                });
                 sails.machines[Path.basename(dir)] = require(dir);
               }
             } catch(e) {}
@@ -113,6 +126,11 @@ module.exports = function MachinesHook (sails) {
 
       });
 
+    },
+
+    initialize: function(cb) {
+      this.loadMachines(cb);
     }
   };
+
 };
