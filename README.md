@@ -1,6 +1,8 @@
 # machines
 
-`machines` hook for Sails v0.11
+`machines` hook for Sails v0.11.
+
+A more structured alternative to services and/or model methods. Loads app-level machines from your `api/machines` folder and exposes them as `sails.machines.*`
 
 ## Status
 
