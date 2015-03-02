@@ -85,7 +85,7 @@ module.exports = function MachinesHook (sails) {
           Filesystem.ls({
             dir: machineDir,
             depth: 1,
-            type: ["dir"]
+            types: ["dir"]
           }).exec(function (err, dirs) {
             if (err) {
               if (err.code == 'ENOENT') {
