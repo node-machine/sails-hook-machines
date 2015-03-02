@@ -31,13 +31,13 @@ module.exports = function MachinesHook (sails) {
       // Get a reference to the "exec" function
       var exec = require("child_process").exec;
       var self = this;
-      // Create an async queue to make sure "npm install" calls don't overlap
+      // Create an async queue to make sure "npm update" calls don't overlap
       this.npmQueue = async.queue(function(dir, cb) {
-        // If installDependencies is enabled, run npm install
+        // If installDependencies is enabled, run npm update
         if (sails.config[self.configKey].installDependencies) {
-          sails.log.silly("NPM INSTALL ", dir);
-          // Run "npm install"
-          exec("npm install", {cwd: dir}, function(err, stdout) {
+          sails.log.silly("NPM UPDATE ", dir);
+          // Run "npm update"
+          exec("npm update", {cwd: dir}, function(err, stdout) {
             sails.log.silly(stdout);
             if (err) {return cb(err);}
             return after();
