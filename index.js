@@ -135,6 +135,9 @@ module.exports = function MachinesHook (sails) {
           dir: machineDir
         });
 
+        // If there are no subdirectories to load, we're done.
+        if (!results.dirs.length) {return cb();}
+
         // Examine the subdirectories
         _.each(results.dirs, function(dir) {
           // If it has a package.json, try to load it as a machine pack
