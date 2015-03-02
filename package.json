@@ -1,6 +1,6 @@
 {
   "name": "sails-hook-machines",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Implements the api/machines directory in Sails",
   "keywords": [
     "sails-hook",
