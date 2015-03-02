@@ -17,10 +17,48 @@ var Filesystem = require('machinepack-fs');
  */
 
 module.exports = function MachinesHook (sails) {
+
   return {
 
-    loadMachines: function (cb) {
+    defaults: {
+      __configKey__: {
+        // Run `npm install` on subfolders
+        installDependencies: false
+      }
+    },
 
+    loadMachines: function (cb) {
+      // Get a reference to the "exec" function
+      var exec = require("child_process").exec;
+      var self = this;
+      // Create an async queue to make sure "npm install" calls don't overlap
+      this.npmQueue = async.queue(function(dir, cb) {
+        // If installDependencies is enabled, run npm install
+        if (sails.config[self.configKey].installDependencies) {
+          sails.log.silly("NPM INSTALL ", dir);
+          // Run "npm install"
+          exec("npm install", {cwd: dir}, function(err, stdout) {
+            sails.log.silly(stdout);
+            if (err) {return cb(err);}
+            return after();
+          });
+        }
+        // Otherwise just load the machine pack
+        else {
+          return after();
+        }
+        function after() {
+          // Load the machine pack
+          sails.machines[Path.basename(dir)] = require(dir);
+          return cb();
+        }
+      }, 1);
+
+      // Once all the npm install tasks are done, call the callback
+      // that will indicate that the hook is finished
+      this.npmQueue.drain = cb;
+
+      // Collection of loaded machines and packs
       sails.machines = {};
 
       var machineDir = Path.resolve(sails.config.appPath, sails.config.paths.machines || 'api/machines');
@@ -99,11 +137,11 @@ module.exports = function MachinesHook (sails) {
 
         // Examine the subdirectories
         _.each(results.dirs, function(dir) {
-
           // If it has a package.json, try to load it as a machine pack
           var packageJson = Path.resolve(dir, "package.json");
           if (results.entries.indexOf(packageJson) > -1) {
             try {
+
               // Load the package.json
               packageJson = require(packageJson);
               // If it has a "machinepack" key, try to load it as a machinepack
@@ -115,14 +153,13 @@ module.exports = function MachinesHook (sails) {
                     delete require.cache[filePath];
                   }
                 });
-                sails.machines[Path.basename(dir)] = require(dir);
+                // Queue up the pack for npm install
+                self.npmQueue.push(dir);
               }
-            } catch(e) {}
+            } catch(e) {console.log(e);}
           }
 
         });
-
-        return cb();
 
       });
 
