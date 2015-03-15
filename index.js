@@ -6,7 +6,7 @@ var Path = require('path');
 var _ = require('lodash');
 var Machine = require('machine');
 var Filesystem = require('machinepack-fs');
-
+var async = require('async');
 
 
 /**
