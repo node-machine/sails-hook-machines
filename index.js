@@ -32,14 +32,23 @@ module.exports = function MachinesHook (sails) {
       var exec = require("child_process").exec;
       var self = this;
       // Create an async queue to make sure "npm install" calls don't overlap
-      this.npmQueue = async.queue(function(dir, cb) {
+      this.npmQueue = async.queue(function(dir, qcb) {
         // If installDependencies is enabled, run npm install
         if (sails.config[self.configKey].installDependencies) {
           sails.log.silly("NPM INSTALL ", dir);
           // Run "npm install"
-          exec("npm install", {cwd: dir}, function(err, stdout) {
+          exec("npm install", {cwd: dir}, function(err, stdout, stderr) {
+            if (stderr && stderr.match(/^npm ERR!/m)) {
+              sails.log.silly(stderr);
+              self.npmQueue.kill();
+              var errMsg = "\nCould not install dependencies.  Please try running again as root/administrator (using `sudo` on OS X or Linux).";
+              return cb(errMsg);
+            }
             sails.log.silly(stdout);
-            if (err) {return cb(err);}
+            if (err) {
+              self.npmQueue.kill();
+              return cb(err);
+            }
             return after();
           });
         }
@@ -50,7 +59,7 @@ module.exports = function MachinesHook (sails) {
         function after() {
           // Load the machine pack
           sails.machines[Path.basename(dir)] = require(dir);
-          return cb();
+          return qcb();
         }
       }, 1);
 
