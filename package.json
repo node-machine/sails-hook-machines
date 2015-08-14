@@ -13,7 +13,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "lodash": "^2.4.1",
-    "machine": "^4.0.0",
+    "machine": "^11.0.0",
     "machinepack-fs": "^2.0.0"
   },
   "devDependencies": {
