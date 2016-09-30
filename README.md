@@ -1,6 +1,9 @@
-# machines
+# sails-hook-machines
 
-`machines` hook for Sails v0.11.
+> ### This package will be deprecated
+> The functionality in this package has been superseded by the introduction of *helpers* in Sails v1.0.  See [the Sails roadmap](https://github.com/balderdashy/sails/blob/master/ROADMAP.md#v10) for more information.
+
+`machines` hook for Sails < v1.0.
 
 A more structured alternative to services and/or model methods. Loads app-level machines from your `api/machines` folder and exposes them as `sails.machines.*`
 
@@ -40,7 +43,7 @@ This repo contains a hook, one of the building blocks Sails is made out of.
 
 #### What version of Sails is this for?
 
-The versioning of a hook closely mirrors that of the Sails version it depends on.  While the "patch" version (i.e. the "Z" in "X.Y.Z") will normally differ from that of Sails core, the "minor" version number (i.e. the "Y" in "X.Y.Z") of this hook is also the minor version of Sails for which it is designed.  For instance, if a hook is version `0.11.9`, it is designed for Sails `^0.11.0` (that means it'll work from 0.11.0 all the way up until 0.12.0).
+The versioning of a hook closely mirrors that of the Sails version it depends on.  While the "patch" version (i.e. the "Z" in "X.Y.Z") will normally differ from that of Sails core, the "minor" version number (i.e. the "Y" in "X.Y.Z") of this hook is also the minor version of Sails for which it is designed.  For instance, if a hook is version `0.11.9`, it is designed for Sails `^0.11.0` (that means it'll work from 0.11.0 all the way up to and including 0.12.x).
 
 
 
